@@ -68,7 +68,7 @@ int get_size(const std::string& name_file){
     return size_matrice;
 }
 
- void change_matrice(const std::string& name_file){
+void change_matrice(const std::string& name_file){
     int size_matrice = get_size(name_file);
     std::vector<std::vector<int>> matrice(size_matrice,std::vector<int>(size_matrice)) ;
      matrice = get_matrix_from_file(name_file);
@@ -79,4 +79,23 @@ int get_size(const std::string& name_file){
      new_matrice = get_matrix_from_file(name_file);
      std::cout<<"le fichier de sortie est de la forme suivante : \n";
      print_array(new_matrice);
+}
+
+void reduce_space_in_the_file(const std::string& file_name){
+    std::ifstream file(file_name);
+    if(!file){
+        perror("Opening failed\n");
+        exit(EXIT_FAILURE);
+    }
+    int size_ = 0;
+    std::vector<std::string> result;
+    std::string word;
+    while(file >> word){
+        result.push_back(word + " ");
+    }
+    file.close();
+    for (const std::string& x : result) {
+        std::cout<<x;
+    }
+    std::ofstream new_file(file_name);
 }
