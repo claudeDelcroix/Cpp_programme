@@ -32,49 +32,51 @@ void modifie_matrice(const std::string& file_name,const std::vector<std::vector<
     }
 }
 
-void get_matrix_from_file(std::vector<std::vector<int>>& matrix,const std::string& name_file){
-    
+std::vector<std::vector<int>> get_matrix_from_file(const std::string& name_file){
+    std::ifstream file(name_file);
+    if(!file){
+        perror("Opening failed \n");
+        exit(EXIT_FAILURE);
+    }
+    std::vector<std::vector<int>> matrice;
+    int size_matrice = 0;
+    if (file >> size_matrice) {
+        for (int i = 0; i < size_matrice; i++) {
+            std::vector<int> ligne;
+            for (int j = 0; j < size_matrice; j++) {
+                int valeur;
+                if (file >> valeur) {
+                    ligne.push_back(valeur);
+                }
+            }
+            matrice.push_back(ligne);
+        }
+    }
+    file.close();
+    return matrice;
 }
 
- void change_matrice(const std::string& name_file){
-
+int get_size(const std::string& name_file){
     std::ifstream file(name_file);
     if(!file){
         perror("Opening failed \n");
         exit(EXIT_FAILURE);
     }
     int size_matrice = 0;
+    file >> size_matrice;
+    file.close();
+    return size_matrice;
+}
+
+ void change_matrice(const std::string& name_file){
+    int size_matrice = get_size(name_file);
     std::vector<std::vector<int>> matrice(size_matrice,std::vector<int>(size_matrice)) ;
-     if (file >> size_matrice) {
-         for (int i = 0; i < size_matrice; i++) {
-             std::vector<int> ligne;
-             for (int j = 0; j < size_matrice; j++) {
-                 int valeur;
-                 if (file >> valeur) {
-                     ligne.push_back(valeur);
-                 }
-             }
-             matrice.push_back(ligne);
-         }
-     }
+     matrice = get_matrix_from_file(name_file);
      std::cout<<"le fichier d'entree est de la forme suivante : \n";
      print_array(matrice);
      modifie_matrice(name_file,matrice);
-     std::ifstream new_file(name_file);
      std::vector<std::vector<int>> new_matrice(size_matrice,std::vector<int>(size_matrice));
-     size_matrice = 0;
-     if (new_file >> size_matrice) {
-         for (int i = 0; i < size_matrice; i++) {
-             std::vector<int> ligne;
-             for (int j = 0; j < size_matrice; j++) {
-                 int valeur;
-                 if (new_file >> valeur) {
-                     ligne.push_back(valeur);
-                 }
-             }
-             new_matrice.push_back(ligne);
-         }
-     }
+     new_matrice = get_matrix_from_file(name_file);
      std::cout<<"le fichier de sortie est de la forme suivante : \n";
      print_array(new_matrice);
 }

@@ -10,4 +10,6 @@
 void change_matrice(const std::string& name_file);
 void print_array(const std::vector<std::vector<int>>& array_vec);
 void modifie_matrice(const std::string& file_name,const std::vector<std::vector<int>>& matrice);
+int get_size(const std::string& name_file);
+std::vector<std::vector<int>> get_matrix_from_file(const std::string& name_file);
 #endif //LAB_1_CHANGE_MATRICE_H
